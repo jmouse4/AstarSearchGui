@@ -92,10 +92,24 @@ public class SearchGrid {
 		
 		
 	}
-	
+	/**
+	 * Clear all buttons on gridPanel
+	 */
+	public static void clearButtons(){
+		for(int i = 0; i < N*N; i++){
+			buttons[i].setText(" ");
+		}
+		
+	}
+	/**
+	 * records the current gridPanel state
+	 * @return gridState
+	 */
 	public static String[] getGridState(){
 		String[] gridState = new String[N*N];
-		
+			for(int i = 0; i < N*N; i++){
+				gridState[i] = buttons[i].getText();
+			}
 		
 		return gridState;
 	}

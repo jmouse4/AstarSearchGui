@@ -11,11 +11,11 @@ public class Node {
 	//Class variables for node
 	private int x; // Row position on grid
 	private int y; // Column position on grid
-	private int startDist; //
-	private int manDist;
-	private boolean navigable;
-	private boolean start;
-	private boolean goal;
+	private int startDist; //distance traveled from start
+	private int manDist; //distance from node to goal
+	private boolean navigable; //determines if node is an obstacle for path
+	private boolean start; //true if node is starting node
+	private boolean goal; //true if node is goal node
 	
 	//node that explored this node
 	private Node parent;
@@ -90,12 +90,14 @@ public class Node {
 	public void setStart(){
 		this.start = true;
 		this.parent = null;
+		this.goal = false;
 	}
 	public boolean isGoal(){
 		return goal;
 	}
 	public void setGoal(){
 		this.goal = true;
+		this.start = false;
 	}
 	
 	//Methods
