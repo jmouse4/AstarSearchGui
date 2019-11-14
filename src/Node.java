@@ -5,7 +5,7 @@
  * Contains information about nodes position 
  * navigable
  * starting node or goal node 
- * Node is also a Linked List node.
+ * Node is also a linked list referencing the parent node that explored it.
  * 
  */
 public class Node 

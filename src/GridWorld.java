@@ -4,11 +4,12 @@
  *
  */
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class GridWorld {
 	//Class variables
 		private Node[][] nodeGrid;
-		private ArrayList<Node> frontier;
+		private LinkedList<Node> frontier;
 		private ArrayList<Node> visited;
 		private Node start;
 		private Node goal;
@@ -17,7 +18,7 @@ public class GridWorld {
 		public GridWorld()
 		{
 			nodeGrid = new Node[15][15];
-			frontier = new ArrayList<Node>();
+			frontier = new LinkedList<Node>();
 			visited = new ArrayList<Node>();
 
 		}
@@ -32,6 +33,7 @@ public class GridWorld {
 		{
 			start = nodeGrid[x][y];
 			start.setStart();
+			Log.debug("Start is now at x: " + start.getX() + ", y" + start.getY()); 
 		}
 		/**
 		 * Sets the goal for the world and calculates the Manhattan distance for all nodes
@@ -42,6 +44,7 @@ public class GridWorld {
 		{
 			goal = nodeGrid[x][y];
 			goal.setGoal();
+			Log.debug("goal is now at x: " + goal.getX() + ", y" + goal.getY());
 			
 			for(int k = 0; k < 15; k++)
 			{
@@ -94,38 +97,46 @@ public class GridWorld {
 			boolean success = false;
 			while(!success){
 				//explore the frontier
-				if(frontier.size() == 0 || start.isNavigable() == false || goal.isNavigable() == false){ //Failure, returns an empty array of results
-					System.out.println("No Path could be found :(");
+				if(frontier.size() == 0 || start.isNavigable() == false || goal.isNavigable() == false)
+				{ //Failure, returns an empty array of results
+					Log.debug("No Path could be found :(");
 					break;
-				} else { //Pick a node to explore
+				} else 
+				{ //Pick a node to explore
 					int pickIndex = 0;
 					//picks the node with the lowest d() + h()
-					for(int i = 1; i < frontier.size(); i++){
-						if(frontier.get(i).Astar() < frontier.get(pickIndex).Astar()){
+					for(int i = 1; i < frontier.size(); i++)
+					{
+						if(frontier.get(i).Astar() < frontier.get(pickIndex).Astar())
+						{
 							pickIndex = i;
 						}
 					}
 					picked = frontier.remove(pickIndex);
 					visited.add(picked); //Adds Picked to Visited
-					System.out.println("Picked: " + "(" + picked.getX() + ", " + picked.getY() + ")" 
+					Log.debug("Picked: " + "(" + picked.getX() + ", " + picked.getY() + ")" 
 							+ " f(): " + picked.Astar() + " d(): " + picked.getStartDist() + " h(): " + picked.getManDist());
 					//GOAL is found. Add path to results
-					if(picked.equals(goal)){
-						System.out.println("Found Goal!!");
-						System.out.print("Path: ");
+					if(picked.equals(goal))
+					{
+						Log.debug("Found Goal!");
+						StringBuilder sb = new StringBuilder();
+						sb.append("Path: ");
 						temp = picked;
 						
-						while(temp != null){
-							System.out.print(temp.toString());
+						while(temp != null)
+						{
+							sb.append(temp.toString());
 							temp = temp.getParent();
 						}
 						
-						
+						Log.debug(sb.toString());
 						success = true;
 					}
 					
 					//Add the left node, top node, right node, bottom node of the picked node if the node is not null, not a block, or visited node
-					if(picked.getX() - 1 >= 0) {
+					if(picked.getX() - 1 >= 0) 
+					{
 						if (nodeGrid[picked.getX() - 1][picked.getY()].isNavigable() 
 							&& !visited.contains(nodeGrid[picked.getX() - 1][picked.getY()]) 
 							&& !frontier.contains(nodeGrid[picked.getX() - 1][picked.getY()]))
@@ -135,7 +146,8 @@ public class GridWorld {
 							frontier.add(0, temp);
 						}
 					}
-					if(picked.getY() + 1 < 15){
+					if(picked.getY() + 1 < 15)
+					{
 						if(nodeGrid[picked.getX()][picked.getY() + 1].isNavigable() 
 							&& !visited.contains(nodeGrid[picked.getX()][picked.getY() + 1]) 
 							&& !frontier.contains(nodeGrid[picked.getX()][picked.getY() + 1]))
@@ -145,7 +157,8 @@ public class GridWorld {
 							frontier.add(0, temp);
 						}	
 					}
-					if(picked.getX() + 1 < 15){
+					if(picked.getX() + 1 < 15)
+					{
 						if(nodeGrid[picked.getX() + 1][picked.getY()].isNavigable() 
 							&& !visited.contains(nodeGrid[picked.getX() + 1][picked.getY()])
 							&& !frontier.contains(nodeGrid[picked.getX() + 1][picked.getY()]))
@@ -155,7 +168,8 @@ public class GridWorld {
 							frontier.add(0, temp);
 						}
 					}
-					if(picked.getY() - 1 >= 0){
+					if(picked.getY() - 1 >= 0)
+					{
 						if(nodeGrid[picked.getX()][picked.getY() - 1].isNavigable() 
 							&& !visited.contains(nodeGrid[picked.getX()][picked.getY() - 1]) 
 							&& !frontier.contains(nodeGrid[picked.getX()][picked.getY() - 1]))
