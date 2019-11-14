@@ -33,7 +33,7 @@ public class GridWorld {
 		{
 			start = nodeGrid[x][y];
 			start.setStart();
-			Log.debug("Start is now at x: " + start.getX() + ", y" + start.getY()); 
+			Log.debug("Start in GridWorld is at x: " + start.getX() + ", y" + start.getY()); 
 		}
 		/**
 		 * Sets the goal for the world and calculates the Manhattan distance for all nodes
@@ -44,15 +44,8 @@ public class GridWorld {
 		{
 			goal = nodeGrid[x][y];
 			goal.setGoal();
-			Log.debug("goal is now at x: " + goal.getX() + ", y" + goal.getY());
+			Log.debug("goal is now at x: " + goal.getX() + ", y: " + goal.getY());
 			
-			for(int k = 0; k < 15; k++)
-			{
-				for(int l = 0; l < 15; l++)
-				{
-					nodeGrid[k][l].setManhattan(goal);
-				}
-			}
 		}
 		
 		/**
@@ -65,6 +58,7 @@ public class GridWorld {
 				for(int y = 0; y < 15; y++)
 				{
 					nodeGrid[x][y] = new Node(x, y);
+					
 					if(gridState[x*15+y] == SearchGrid.START)
 					{
 						setStart(x, y);
@@ -81,6 +75,21 @@ public class GridWorld {
 				}
 			}
 			
+			setManhattans();
+		}
+		
+		/**
+		 * Set Manhattan distances for all nodes after all nodes instantiated
+		 */
+		private void setManhattans(){
+			
+			for(int k = 0; k < 15; k++)
+			{
+				for(int l = 0; l < 15; l++)
+				{
+					nodeGrid[k][l].setManhattan(goal);
+				}
+			}
 		}
 		
 		/**

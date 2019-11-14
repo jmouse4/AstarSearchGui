@@ -14,6 +14,7 @@ public class SearchGrid
 	private static JButton buttons[] = new JButton[N*N];
 	private static boolean pickStart = true;
 	private static boolean pickGoal = true;
+	private static boolean pathShown = false;
 	protected static final String START = "S";
 	protected static final String GOAL = "G";
 	protected static final String BLOCK = "B";
@@ -43,6 +44,7 @@ public class SearchGrid
 		for (int i = 0; i < buttons.length; i++)
 		{
 			buttons[i] = new MyButton();
+			buttons[i].setBackground(Color.white);
 			panel.add(buttons[i]);
 		}
 		
@@ -51,6 +53,7 @@ public class SearchGrid
 		frame.setVisible(true);
 		
 		frame.setSize(1200,1200);
+		
 	}
 	
 	/**
@@ -78,43 +81,63 @@ public class SearchGrid
 			if (pickStart && getText().equals(" "))
 			{
 				setText(START);
+				setBackground(Color.pink);
 				pickStart = false;
+				
+				//Log.debug("Start is in button " + getX() + ", " + getY());
 			}
 			//remove start position
 			else if(!pickStart && getText().equals(START))
 			{
 				setText(" ");
+				setBackground(Color.white);
 				pickStart = true;
+				
+				//Log.debug("Start removed from button" + getX() + ", " + getY());
 			}
 			//Pick a goal position
 			else if (!pickStart && pickGoal && getText().equals(" "))
 			{
 				setText(GOAL);
+				setBackground(Color.green);
 				pickGoal = false;
+				
+				//Log.debug("Goal is in button " + getX() + ", " + getY());
 			}
 			//remove goal position
 			else if (!pickGoal && getText().equals(GOAL))
 			{
 				setText(" ");
+				setBackground(Color.white);
 				pickGoal = true;
+				
+				//Log.debug("Goal removed from button " + getX() + ", " + getY());
 			}
 			/**
 			 * TODO: Select as many blocks as later. For now select only 10
 			 */
-			else if (!pickStart && !pickGoal && blocks < 10)
+			else if(getText().equals(" ") && blocks < 10)
 			{
-				if(getText().equals(" "))
-				{
-					setText(BLOCK);
-					blocks++;
-				} else if (getText().equals(BLOCK))
-				{
-					setText(" ");
-					blocks--;
-				}
+				setText(BLOCK);
+				setBackground(Color.gray);
+				blocks++;
 				
-			} else {
+				//Log.debug("block is in button " + getX() + ", " + getY());
+			} 
+			else if (getText().equals(BLOCK))
+			{
+				setText(" ");
+				setBackground(Color.white);
+				blocks--;
+				
+				//Log.debug("Block removed from button " + getX() + "," + getY());
+			}
+			
+			else if (blocks == 10 && !pickStart && !pickGoal)
+			{
 				GridWorld gw = new GridWorld();
+				gw.genWorld(getGridState());
+				showPath(gw.Asearch());
 			}
 			
 		}
@@ -130,6 +153,13 @@ public class SearchGrid
 		}
 	}
 	/**
+	 * Clear all buttons with "P" as its text
+	 */
+	public static void clearPath()
+	{
+		
+	}
+	/**
 	 * records the current gridPanel state
 	 * @return gridState
 	 */
@@ -141,5 +171,14 @@ public class SearchGrid
 				gridState[i] = buttons[i].getText();
 			}
 		return gridState;
+	}
+	/**
+	 * shows path to from start to goal
+	 * @param goal
+	 */
+	public static void showPath(Node goal)
+	{
+		
+		pathShown = true;
 	}
 }
