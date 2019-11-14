@@ -5,7 +5,6 @@
  */
 import java.awt.*;
 import java.awt.event.*;
-import java.util.concurrent.ExecutionException;
 import javax.swing.*;
 
 public class SearchGrid 
@@ -56,8 +55,7 @@ public class SearchGrid
 	
 	/**
 	 * Customized button extending the JButton Class from Java Swing library
-	 * @author dajer
-	 *
+	 * @ Jerry Moua
 	 */
 	@SuppressWarnings("serial")
 	private static class MyButton extends JButton implements ActionListener 
@@ -115,6 +113,8 @@ public class SearchGrid
 					blocks--;
 				}
 				
+			} else {
+				GridWorld gw = new GridWorld();
 			}
 			
 		}

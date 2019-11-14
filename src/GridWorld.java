@@ -80,16 +80,16 @@ public class GridWorld {
 					
 				}
 			}
+			
 		}
 		
 		/**
 		 * A* Search Method
 		 */
-		public void Asearch()
+		public Node Asearch()
 		{
-
 			//results = new ArrayList<Node>();
-			Node picked;
+			Node picked = null;
 			Node temp;
 			frontier.add(start);
 			
@@ -181,5 +181,7 @@ public class GridWorld {
 					}
 				}
 			}//While(success)
+			
+			return picked;
 		}
 }
