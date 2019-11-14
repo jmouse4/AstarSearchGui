@@ -10,12 +10,16 @@ import javax.swing.*;
 
 public class SearchGrid {
 	//class instances
-	private static JButton buttons[] = new JButton[15*15];
+	private static final int N = 15;
+	private static JButton buttons[] = new JButton[N*N];
 	private static boolean pickStart = true;
+	private static boolean pickGoal = false;
 	private static final String START = "S";
 	private static final String GOAL = "G";
 	private static final String BLOCK = "B";
 	private static final String PATH = "P";
+	
+	public static int blocks = 0;
 	
 	public static void main(String[] args){
 		gridPanel();
@@ -65,14 +69,34 @@ public class SearchGrid {
 		 * User selects start and goal nodes.
 		 */
 		public void actionPerformed(ActionEvent e){
-			if (pickStart && getText().equals(" ")){
+			if (pickStart && !pickGoal && getText().equals(" ")){
 				setText(START);
 				pickStart = false;
+				pickGoal = true;
 			} 
-			else {
+			else if (!pickStart && pickGoal && getText().equals(" ")){
 				setText(GOAL);
+				pickGoal = false;
+			} else if (!pickStart && !pickGoal){
+				if(getText().equals(" ")){
+					setText(BLOCK);
+					blocks++;
+				} else if (getText().equals(BLOCK)){
+					setText(" ");
+					blocks--;
+				}
+				
 			}
 			
 		}
+		
+		
+	}
+	
+	public static String[] getGridState(){
+		String[] gridState = new String[N*N];
+		
+		
+		return gridState;
 	}
 }
