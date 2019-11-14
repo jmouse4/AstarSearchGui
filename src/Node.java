@@ -3,8 +3,9 @@
  * @author Jerry Moua
  * Node Class. 
  * Contains information about nodes position 
- * is navigable
- * is the starting node or goal node 
+ * navigable
+ * starting node or goal node 
+ * Node is also a Linked List node.
  * 
  */
 public class Node 

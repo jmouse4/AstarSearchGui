@@ -62,6 +62,19 @@ public class GridWorld {
 				for(int y = 0; y < 15; y++)
 				{
 					nodeGrid[x][y] = new Node(x, y);
+					if(gridState[x*15+y] == SearchGrid.START)
+					{
+						setStart(x, y);
+					}
+					else if(gridState[x*15+y] == SearchGrid.GOAL)
+					{
+						setGoal(x, y);
+					}
+					else if(gridState[x*15+y] == SearchGrid.BLOCK)
+					{
+						nodeGrid[x][y].setNavigable(false);
+					}
+					
 				}
 			}
 		}

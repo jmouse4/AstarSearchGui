@@ -15,10 +15,10 @@ public class SearchGrid
 	private static JButton buttons[] = new JButton[N*N];
 	private static boolean pickStart = true;
 	private static boolean pickGoal = true;
-	private static final String START = "S";
-	private static final String GOAL = "G";
-	private static final String BLOCK = "B";
-	private static final String PATH = "P";
+	protected static final String START = "S";
+	protected static final String GOAL = "G";
+	protected static final String BLOCK = "B";
+	protected static final String PATH = "P";
 	
 	public static int blocks = 0;
 	
