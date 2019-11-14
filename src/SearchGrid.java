@@ -89,8 +89,6 @@ public class SearchGrid {
 			}
 			
 		}
-		
-		
 	}
 	/**
 	 * Clear all buttons on gridPanel
@@ -99,7 +97,6 @@ public class SearchGrid {
 		for(int i = 0; i < N*N; i++){
 			buttons[i].setText(" ");
 		}
-		
 	}
 	/**
 	 * records the current gridPanel state
@@ -110,7 +107,6 @@ public class SearchGrid {
 			for(int i = 0; i < N*N; i++){
 				gridState[i] = buttons[i].getText();
 			}
-		
 		return gridState;
 	}
 }
