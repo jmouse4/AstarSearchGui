@@ -1,6 +1,6 @@
 /**
  * Collects debug data and prints to console
- * @author dajer
+ * @author Jerry Moua
  *
  */
 public final class Log 

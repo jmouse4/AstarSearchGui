@@ -7,7 +7,8 @@
  * is the starting node or goal node 
  * 
  */
-public class Node {
+public class Node 
+{
 	//Class variables for node
 	private int x; // Row position on grid
 	private int y; // Column position on grid
@@ -25,7 +26,8 @@ public class Node {
 	 * @param x
 	 * @param y
 	 */
-	public Node(int x, int y){
+	public Node(int x, int y)
+	{
 		this.x = x;
 		this.y = y;
 		this.navigable = true;
@@ -37,7 +39,8 @@ public class Node {
 	 * Constructor for creating a new copy of another Node Object
 	 * @param dup
 	 */
-	public Node(Node dup){
+	public Node(Node dup)
+	{
 		this.x = dup.x;
 		this.y = dup.y;
 		this.navigable = dup.navigable;
@@ -48,54 +51,69 @@ public class Node {
 	}
 	
 	//Getters and Setters for Node Class
-	public int getX(){
+	public int getX()
+	{
 		return x;
 	}
-	public void setX(int x){
+	public void setX(int x)
+	{
 		this.x = x;
 	}
-	public int getY(){
+	public int getY()
+	{
 		return y;
 	}
-	public void setY(int y){
+	public void setY(int y)
+	{
 		this.y = y;
 	}
-	public boolean isNavigable(){
+	public boolean isNavigable()
+	{
 		return navigable;
 	}
-	public void setNavigable(boolean navigable){
+	public void setNavigable(boolean navigable)
+	{
 		this.navigable = navigable;
 	}
-	public int getStartDist(){
+	public int getStartDist()
+	{
 		return startDist;
 	}
-	public void setStartDist(int dist){
+	public void setStartDist(int dist)
+	{
 		this.startDist = dist;
 	}
-	public int getManDist(){
+	public int getManDist()
+	{
 		return manDist;
 	}
 	//Sets parent of current Node, increments distance from start from parents distance.
-	public void setParent(Node P){
+	public void setParent(Node P)
+	{
 		this.parent = P;
 		this.startDist = parent.startDist + 1;
 	}
-	public Node getParent(){
+	public Node getParent()
+	{
 		return parent;
 	}
 	
-	public boolean isStart(){
+	public boolean isStart()
+	{
 		return start;
 	}
-	public void setStart(){
+	public void setStart()
+	{
 		this.start = true;
 		this.parent = null;
 		this.goal = false;
 	}
-	public boolean isGoal(){
+	public boolean isGoal()
+	{
 		return goal;
 	}
-	public void setGoal(){
+	public void setGoal()
+	{
 		this.goal = true;
 		this.start = false;
 	}
@@ -105,7 +123,8 @@ public class Node {
 	 * Sets the Manhattan Distance from Node to Goal
 	 * @param goal
 	 */
-	public void setManhattan(Node goal){
+	public void setManhattan(Node goal)
+	{
 		int xValue = Math.abs(goal.getX() - this.x);
 		int yValue = Math.abs(goal.getY() - this.y);		
 		
@@ -115,7 +134,8 @@ public class Node {
 	 * Returns the value distance d() + Manhattan h() 
 	 * @return Astar value
 	 */
-	public int Astar(){
+	public int Astar()
+	{
 		return startDist + manDist;
 	}
 	
@@ -124,10 +144,15 @@ public class Node {
 	 * @param dupe
 	 * @return boolean
 	 */
-	public boolean equals(Node dupe){
+	public boolean equals(Node dupe)
+	{
 		if(dupe == null){
 			return false;
-		} else if(this.x == dupe.getX() && this.y == dupe.getY() && this.navigable == dupe.isNavigable()){
+		} 
+		else if(this == dupe){
+			return true;
+		}
+		else if(this.x == dupe.getX() && this.y == dupe.getY() && this.navigable == dupe.isNavigable()){
 			return true;
 		}
 		return false;
@@ -136,7 +161,8 @@ public class Node {
 	 * Prints out node information in String
 	 */
 	@Override
-	public String toString(){
+	public String toString()
+	{
 		return "(" + this.x + ", " + this.y + ") ";
 	}
 }

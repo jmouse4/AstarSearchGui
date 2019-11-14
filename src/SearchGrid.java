@@ -1,7 +1,7 @@
 /**
  * 
  * @author Jerry Moua
- * Search Grid contains code or interface for Astar search.
+ * Search Grid contains code for interface for Astar search.
  */
 import java.awt.*;
 import java.awt.event.*;
