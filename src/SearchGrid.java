@@ -8,12 +8,13 @@ import java.awt.event.*;
 import java.util.concurrent.ExecutionException;
 import javax.swing.*;
 
-public class SearchGrid {
+public class SearchGrid 
+{
 	//class instances
 	private static final int N = 15;
 	private static JButton buttons[] = new JButton[N*N];
 	private static boolean pickStart = true;
-	private static boolean pickGoal = false;
+	private static boolean pickGoal = true;
 	private static final String START = "S";
 	private static final String GOAL = "G";
 	private static final String BLOCK = "B";
@@ -21,14 +22,16 @@ public class SearchGrid {
 	
 	public static int blocks = 0;
 	
-	public static void main(String[] args){
+	public static void main(String[] args)
+	{
 		gridPanel();
 	}
 	
 	/**
 	 * Creates a frame, panel, and buttons on the board.
 	 */
-	private static void gridPanel(){
+	private static void gridPanel()
+	{
 		
 		JFrame frame = new JFrame("Astar Search");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -38,7 +41,8 @@ public class SearchGrid {
 		panel.setBorder(BorderFactory.createLineBorder(Color.blue, 3));
 		panel.setBackground(Color.white);
 		
-		for (int i = 0; i < buttons.length; i++){
+		for (int i = 0; i < buttons.length; i++)
+		{
 			buttons[i] = new MyButton();
 			panel.add(buttons[i]);
 		}
@@ -56,9 +60,11 @@ public class SearchGrid {
 	 *
 	 */
 	@SuppressWarnings("serial")
-	private static class MyButton extends JButton implements ActionListener {
+	private static class MyButton extends JButton implements ActionListener 
+	{
 		
-		public MyButton(){
+		public MyButton()
+		{
 			super();
 			setFont(new Font(Font.SERIF, Font.BOLD, 40));
 			setText(" ");
@@ -68,20 +74,43 @@ public class SearchGrid {
 		/**
 		 * User selects start and goal nodes.
 		 */
-		public void actionPerformed(ActionEvent e){
-			if (pickStart && !pickGoal && getText().equals(" ")){
+		public void actionPerformed(ActionEvent e)
+		{
+			//Picks start position
+			if (pickStart && getText().equals(" "))
+			{
 				setText(START);
 				pickStart = false;
-				pickGoal = true;
-			} 
-			else if (!pickStart && pickGoal && getText().equals(" ")){
+			}
+			//remove start position
+			else if(!pickStart && getText().equals(START))
+			{
+				setText(" ");
+				pickStart = true;
+			}
+			//Pick a goal position
+			else if (!pickStart && pickGoal && getText().equals(" "))
+			{
 				setText(GOAL);
 				pickGoal = false;
-			} else if (!pickStart && !pickGoal){
-				if(getText().equals(" ")){
+			}
+			//remove goal position
+			else if (!pickGoal && getText().equals(GOAL))
+			{
+				setText(" ");
+				pickGoal = true;
+			}
+			/**
+			 * TODO: Select as many blocks as later. For now select only 10
+			 */
+			else if (!pickStart && !pickGoal && blocks < 10)
+			{
+				if(getText().equals(" "))
+				{
 					setText(BLOCK);
 					blocks++;
-				} else if (getText().equals(BLOCK)){
+				} else if (getText().equals(BLOCK))
+				{
 					setText(" ");
 					blocks--;
 				}
@@ -93,8 +122,10 @@ public class SearchGrid {
 	/**
 	 * Clear all buttons on gridPanel
 	 */
-	public static void clearButtons(){
-		for(int i = 0; i < N*N; i++){
+	public static void clearButtons()
+	{
+		for(int i = 0; i < N*N; i++)
+		{
 			buttons[i].setText(" ");
 		}
 	}
@@ -102,9 +133,11 @@ public class SearchGrid {
 	 * records the current gridPanel state
 	 * @return gridState
 	 */
-	public static String[] getGridState(){
+	public static String[] getGridState()
+	{
 		String[] gridState = new String[N*N];
-			for(int i = 0; i < N*N; i++){
+			for(int i = 0; i < N*N; i++)
+			{
 				gridState[i] = buttons[i].getText();
 			}
 		return gridState;
