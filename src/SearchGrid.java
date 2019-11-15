@@ -135,7 +135,10 @@ public class SearchGrid
 				setText(" ");
 				setBackground(Color.white);
 				blocks--;
-				
+				if(pathShown)
+				{
+					clearPath();
+				}
 				//Log.debug("Block removed from button " + getX() + "," + getY());
 			}
 			//Calculate shortest path via A* search
@@ -201,6 +204,7 @@ public class SearchGrid
 		{
 			//Skips changing goal into path
 			Node temp = goal.getParent();
+			int dis = 0;
 			
 			StringBuilder sb = new StringBuilder();
 			sb.append("Path: ");
@@ -220,9 +224,10 @@ public class SearchGrid
 				
 				sb.append(temp.toString());
 				temp = temp.getParent();
+				dis++;
 			}
 
-			Log.debug(sb.toString());
+			Log.debug(sb.toString() + "\nPath Distance: " + dis);
 			pathShown = true;
 		}
 		

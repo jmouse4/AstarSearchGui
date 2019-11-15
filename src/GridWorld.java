@@ -91,6 +91,40 @@ public class GridWorld {
 				}
 			}
 		}
+		/**
+		 * checks if Node has been visited based on x and y of node
+		 * @param check
+		 * @return 
+		 */
+		private boolean checkVisited(Node check)
+		{
+			boolean result = false;
+			for(int i = 0; i < visited.size(); i++)
+			{
+				Node temp = visited.get(i);
+				if(temp.getX() == check.getX() && temp.getY() == check.getY())
+				{
+					Log.debug("[checkVisited] " + temp.toString() + " " + check.toString());
+					result = true;
+				}
+			}
+			//remove any extra visted node in frontier
+			if(result){removeDupFrontier(check);}
+			
+			return result;
+		}
+		/**
+		 * removes any visited nodes stored in frontier
+		 * @param check
+		 */
+		private void removeDupFrontier(Node check){
+			for(int i = 0; i < frontier.size(); i++){
+				Node temp = frontier.get(i);
+				if(temp.getX() == check.getX() && temp.getY() == check.getY()){
+					frontier.remove(i);
+				}
+			}
+		}
 		
 		/**
 		 * A* Search Method
@@ -123,8 +157,10 @@ public class GridWorld {
 					}
 					picked = frontier.remove(pickIndex);
 					visited.add(picked); //Adds Picked to Visited
+					removeDupFrontier(picked); 
 					Log.debug("Picked: " + "(" + picked.getX() + ", " + picked.getY() + ")" 
-							+ " f(): " + picked.Astar() + " d(): " + picked.getStartDist() + " h(): " + picked.getManDist());
+							+ " f(): " + picked.Astar() + " d(): " + picked.getStartDist() 
+							+ " h(): " + picked.getManDist() + " Parent: " + picked.getParent());
 					//GOAL is found. Add path to results
 					if(picked.equals(goal))
 					{
@@ -136,10 +172,9 @@ public class GridWorld {
 					if(picked.getX() - 1 >= 0) 
 					{
 						if (nodeGrid[picked.getX() - 1][picked.getY()].isNavigable() 
-							&& !visited.contains(nodeGrid[picked.getX() - 1][picked.getY()]) 
-							&& !frontier.contains(nodeGrid[picked.getX() - 1][picked.getY()]))
+							&& !checkVisited(nodeGrid[picked.getX() - 1][picked.getY()]))
 						{
-							temp = nodeGrid[picked.getX() - 1][picked.getY()];
+							temp = new Node(nodeGrid[picked.getX() - 1][picked.getY()]);
 							temp.setParent(picked);
 							frontier.add(0, temp);
 						}
@@ -147,10 +182,9 @@ public class GridWorld {
 					if(picked.getX() + 1 < 15)
 					{
 						if(nodeGrid[picked.getX() + 1][picked.getY()].isNavigable() 
-							&& !visited.contains(nodeGrid[picked.getX() + 1][picked.getY()])
-							&& !frontier.contains(nodeGrid[picked.getX() + 1][picked.getY()]))
+							&& !checkVisited(nodeGrid[picked.getX() + 1][picked.getY()]))
 						{
-							temp = nodeGrid[picked.getX() + 1][picked.getY()];
+							temp = new Node(nodeGrid[picked.getX() + 1][picked.getY()]);
 							temp.setParent(picked);
 							frontier.add(0, temp);
 						}
@@ -158,10 +192,9 @@ public class GridWorld {
 					if(picked.getY() + 1 < 15)
 					{
 						if(nodeGrid[picked.getX()][picked.getY() + 1].isNavigable() 
-							&& !visited.contains(nodeGrid[picked.getX()][picked.getY() + 1]) 
-							&& !frontier.contains(nodeGrid[picked.getX()][picked.getY() + 1]))
+							&& !checkVisited(nodeGrid[picked.getX()][picked.getY() + 1]))
 						{
-							temp = nodeGrid[picked.getX()][picked.getY() + 1];
+							temp = new Node(nodeGrid[picked.getX()][picked.getY() + 1]);
 							temp.setParent(picked);
 							frontier.add(0, temp);
 						}	
@@ -170,21 +203,24 @@ public class GridWorld {
 					if(picked.getY() - 1 >= 0)
 					{
 						if(nodeGrid[picked.getX()][picked.getY() - 1].isNavigable() 
-							&& !visited.contains(nodeGrid[picked.getX()][picked.getY() - 1]) 
-							&& !frontier.contains(nodeGrid[picked.getX()][picked.getY() - 1]))
+							&& !checkVisited(nodeGrid[picked.getX()][picked.getY() - 1]))
 						{
-							temp = nodeGrid[picked.getX()][picked.getY() - 1];
+							temp = new Node(nodeGrid[picked.getX()][picked.getY() - 1]);
 							temp.setParent(picked);
 							frontier.add(0, temp);
 						}
 					}
 					
+					//Debug Frontier
 					StringBuilder sb = new StringBuilder();
 					sb.append("[Frontier] ");
 					for(int i = 0; i < frontier.size(); i++){
-						sb.append(frontier.get(i).toString() + "f(): " + frontier.get(i).Astar());
+						sb.append(frontier.get(i).toString() + "f(): " 
+								+ frontier.get(i).Astar() + " P: " + frontier.get(i).getParent().toString()
+								+ ", ");
 					}
 					Log.debug(sb.toString());
+					
 				}
 			}//While(success)
 			
