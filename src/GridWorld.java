@@ -33,7 +33,7 @@ public class GridWorld {
 		{
 			start = nodeGrid[x][y];
 			start.setStart();
-			Log.debug("Start in GridWorld is at x: " + start.getX() + ", y" + start.getY()); 
+			Log.debug("Start in GridWorld is at x: " + start.getX() + ", y: " + start.getY()); 
 		}
 		/**
 		 * Sets the goal for the world and calculates the Manhattan distance for all nodes
@@ -109,7 +109,7 @@ public class GridWorld {
 				if(frontier.size() == 0 || start.isNavigable() == false || goal.isNavigable() == false)
 				{ //Failure, returns an empty array of results
 					Log.debug("No Path could be found :(");
-					break;
+					return null;
 				} else 
 				{ //Pick a node to explore
 					int pickIndex = 0;
@@ -129,21 +129,10 @@ public class GridWorld {
 					if(picked.equals(goal))
 					{
 						Log.debug("Found Goal!");
-						StringBuilder sb = new StringBuilder();
-						sb.append("Path: ");
-						temp = picked;
-						
-						while(temp != null)
-						{
-							sb.append(temp.toString());
-							temp = temp.getParent();
-						}
-						
-						Log.debug(sb.toString());
 						success = true;
 					}
 					
-					//Add the left node, top node, right node, bottom node of the picked node if the node is not null, not a block, or visited node
+					//Add the left node, right node, top node, bottom node of the picked node if the node is not null, not a block, or visited node
 					if(picked.getX() - 1 >= 0) 
 					{
 						if (nodeGrid[picked.getX() - 1][picked.getY()].isNavigable() 
@@ -151,6 +140,17 @@ public class GridWorld {
 							&& !frontier.contains(nodeGrid[picked.getX() - 1][picked.getY()]))
 						{
 							temp = nodeGrid[picked.getX() - 1][picked.getY()];
+							temp.setParent(picked);
+							frontier.add(0, temp);
+						}
+					}
+					if(picked.getX() + 1 < 15)
+					{
+						if(nodeGrid[picked.getX() + 1][picked.getY()].isNavigable() 
+							&& !visited.contains(nodeGrid[picked.getX() + 1][picked.getY()])
+							&& !frontier.contains(nodeGrid[picked.getX() + 1][picked.getY()]))
+						{
+							temp = nodeGrid[picked.getX() + 1][picked.getY()];
 							temp.setParent(picked);
 							frontier.add(0, temp);
 						}
@@ -166,17 +166,7 @@ public class GridWorld {
 							frontier.add(0, temp);
 						}	
 					}
-					if(picked.getX() + 1 < 15)
-					{
-						if(nodeGrid[picked.getX() + 1][picked.getY()].isNavigable() 
-							&& !visited.contains(nodeGrid[picked.getX() + 1][picked.getY()])
-							&& !frontier.contains(nodeGrid[picked.getX() + 1][picked.getY()]))
-						{
-							temp = nodeGrid[picked.getX() + 1][picked.getY()];
-							temp.setParent(picked);
-							frontier.add(0, temp);
-						}
-					}
+					
 					if(picked.getY() - 1 >= 0)
 					{
 						if(nodeGrid[picked.getX()][picked.getY() - 1].isNavigable() 
@@ -188,6 +178,13 @@ public class GridWorld {
 							frontier.add(0, temp);
 						}
 					}
+					
+					StringBuilder sb = new StringBuilder();
+					sb.append("[Frontier] ");
+					for(int i = 0; i < frontier.size(); i++){
+						sb.append(frontier.get(i).toString() + "f(): " + frontier.get(i).Astar());
+					}
+					Log.debug(sb.toString());
 				}
 			}//While(success)
 			

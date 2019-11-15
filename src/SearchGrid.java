@@ -93,6 +93,9 @@ public class SearchGrid
 				setBackground(Color.white);
 				pickStart = true;
 				
+				if(pathShown){
+					clearPath();
+				}
 				//Log.debug("Start removed from button" + getX() + ", " + getY());
 			}
 			//Pick a goal position
@@ -111,6 +114,9 @@ public class SearchGrid
 				setBackground(Color.white);
 				pickGoal = true;
 				
+				if(pathShown){
+					clearPath();
+				}
 				//Log.debug("Goal removed from button " + getX() + ", " + getY());
 			}
 			/**
@@ -132,8 +138,8 @@ public class SearchGrid
 				
 				//Log.debug("Block removed from button " + getX() + "," + getY());
 			}
-			
-			else if (blocks == 10 && !pickStart && !pickGoal)
+			//Calculate shortest path via A* search
+			if (blocks == 10 && !pickStart && !pickGoal)
 			{
 				GridWorld gw = new GridWorld();
 				gw.genWorld(getGridState());
@@ -157,7 +163,15 @@ public class SearchGrid
 	 */
 	public static void clearPath()
 	{
-		
+		for(int i = 0; i < N*N; i++)
+		{
+			if(buttons[i].getText() == PATH)
+			{
+				buttons[i].setText(" ");
+				buttons[i].setBackground(Color.white);
+			}
+		}
+		pathShown=false;
 	}
 	/**
 	 * records the current gridPanel state
@@ -178,7 +192,39 @@ public class SearchGrid
 	 */
 	public static void showPath(Node goal)
 	{
+
+		if(goal == null)
+		{
+			JOptionPane.showMessageDialog(null, "No Path could be found :(");
+		} 
+		else
+		{
+			//Skips changing goal into path
+			Node temp = goal.getParent();
+			
+			StringBuilder sb = new StringBuilder();
+			sb.append("Path: ");
+			sb.append(goal.toString());
+			
+			while(temp != null)
+			{
+				//skips changing start into path
+				if(temp.getParent()== null)
+				{
+					sb.append(temp.toString());
+					break;
+				}
+				int x = temp.getX(), y = temp.getY();
+				buttons[x*15+y].setText(PATH);
+				buttons[x*15+y].setBackground(Color.yellow);
+				
+				sb.append(temp.toString());
+				temp = temp.getParent();
+			}
+
+			Log.debug(sb.toString());
+			pathShown = true;
+		}
 		
-		pathShown = true;
 	}
 }
